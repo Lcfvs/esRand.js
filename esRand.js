@@ -12,14 +12,25 @@ esRand = (function () {
     cos = Math.cos;
     pow = Math.pow;
     
-    now = performance
-    && performance.now
-        ? performance.now.bind(performance)
-        : Date.now
-            ? Date.bind(Date)
-            : function now() {
-                return +new Date();
-            };
+    now = typeof process === 'object'
+    && typeof process.hrtime === 'function'
+        ? function () {
+            var hrtime;
+            
+            hrtime = process.hrtime();
+            
+            return hrtime[0] * 1000
+            + hrtime[1] / 1000 / 1000
+            + new Date();
+        }
+        : typeof performance === 'object'
+        && typeof performance.now === 'function'
+            ? performance.now.bind(performance)
+            : typeof Date.now === 'function'
+                ? Date.bind(Date)
+                : function now() {
+                    return +new Date();
+                };
 
     lastCos = cos(now());
 
