@@ -21,7 +21,7 @@ esRand = (function () {
             
             return hrtime[0] * 1000
             + hrtime[1] / 1000 / 1000
-            + new Date();
+            + +new Date();
         }
         : typeof performance === 'object'
         && typeof performance.now === 'function'
@@ -53,3 +53,5 @@ esRand = (function () {
 
     return esRand;
 }());
+
+console.log(esRand(12))
